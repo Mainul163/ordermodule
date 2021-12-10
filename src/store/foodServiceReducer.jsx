@@ -47,7 +47,7 @@ const initialState = {
     {
       id: 2,
       companyUniqueKey: "string",
-      title: "Pasta",
+      title: "Pizza 2.0",
       description: "Prepared with giant 300 gram",
       vendorCategoryId: 1,
       systemCategoryId: 1,
@@ -56,7 +56,7 @@ const initialState = {
       vendorFoodAdditionals: [
         {
           id: 2,
-          title: "Pasta",
+          title: "Pizza 2.0",
           description: "Prepared with giant 300 gram",
           required: true,
           requiredNumber: 0,

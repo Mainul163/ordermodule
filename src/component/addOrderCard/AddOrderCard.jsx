@@ -1,23 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { get_food_service } from "../../store/foodServicesActionType";
+
 import OrderModal from "../modal/OrderModal";
 
-const AddOrderCard = ({ onCreate }) => {
+const AddOrderCard = ({ onCreate, foodServiceListData }) => {
   const [visible, setVisible] = useState(false);
-  // ************ get food service data from store  ***************
-  const foodServiceListData = useSelector((state) => state);
-  const dispatch = useDispatch();
-  const foodServiceList = async () => {
-    dispatch(await get_food_service());
-  };
-  useEffect(() => {
-    foodServiceList();
-  }, []);
 
-  // ************ end ***************
   return (
     <>
       <Button
@@ -32,6 +20,7 @@ const AddOrderCard = ({ onCreate }) => {
       <OrderModal
         visible={visible}
         onCreate={onCreate}
+        foodServiceListData={foodServiceListData}
         onCancel={() => {
           setVisible(false);
         }}

@@ -1,8 +1,42 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Radio } from "antd";
+import { Button, Modal, Form, Select, Input, Row, Col } from "antd";
+const { Option } = Select;
 
-const OrderModal = ({ visible, onCreate, onCancel }) => {
+// *************** component start *********************
+const OrderModal = ({ visible, onCreate, onCancel, foodServiceListData }) => {
   const [form] = Form.useForm();
+  const [addItem, setAddItem] = useState([[]]);
+  const addItems = () => {
+    const items = [...addItem];
+    items.push([null]);
+    setAddItem(items);
+  };
+  const getFields = () => {
+    const children = [];
+    for (let i = 0; i < addItem.length; i++) {
+      children.push(
+        <Col span={24} key={i}>
+          <Form.Item
+            name={`field-${i}`}
+            label={`Field ${i}`}
+            rules={[
+              {
+                required: true,
+                message: "Input something!",
+              },
+            ]}
+          >
+            <Input placeholder="placeholder" />
+          </Form.Item>
+        
+        </Col>
+        
+      );
+    }
+    return children;
+  };
+
+  console.log(addItem.length);
   return (
     <>
       <Modal
@@ -32,28 +66,32 @@ const OrderModal = ({ visible, onCreate, onCancel }) => {
           }}
         >
           <Form.Item
-            name="title"
-            label="Title"
+            name="foodItemId"
+            label="Food Items"
             rules={[
               {
                 required: true,
-                message: "Please input the title of collection!",
               },
             ]}
           >
-            <Input />
+            <Select
+              placeholder="Select a option and change input text above"
+              allowClear
+            >
+              {foodServiceListData.foodService.foodService.map(
+                (foods, index) => (
+                  <Option value={foods.id} key={index}>
+                    {foods.title}
+                  </Option>
+                )
+              )}
+            </Select>
           </Form.Item>
-          <Form.Item name="description" label="Description">
-            <Input type="textarea" />
-          </Form.Item>
-          <Form.Item
-            name="modifier"
-            className="collection-create-form_last-form-item"
-          >
-            <Radio.Group>
-              <Radio value="public">Public</Radio>
-              <Radio value="private">Private</Radio>
-            </Radio.Group>
+          <Row gutter={24}>{getFields()}</Row>
+          <Form.Item>
+            <Button type="primary" onClick={addItems}>
+              ADD food quantity
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
