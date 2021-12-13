@@ -12,6 +12,7 @@ const AddOrderCard = ({
   onChange,
   visibleItem,
   foodServiceListData,
+  onSelect
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -36,6 +37,7 @@ const AddOrderCard = ({
         onChange={onChange}
         visibleItem={visibleItem}
         foodServiceListData={foodServiceListData}
+        onSelect={onSelect}
         onCancel={() => {
           setVisible(false);
         }}
