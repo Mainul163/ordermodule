@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from 'antd';
 import './OrderListDetails.css';
-import { useState } from 'react';
-const OrderListDetails = ({ branchOrderFoodAdditionals, additionalList }) => {
-	console.log(branchOrderFoodAdditionals);
+
+const OrderListDetails = ({
+	branchOrderFoodAdditionals,
+	divideFoodAdditionalItemList,
+}) => {
+	const [makeAdditionalItemList, setMakeAdditionalList] = useState({
+		foodBranchOrderFoodAdditionalItems: null,
+	});
+
+	if (divideFoodAdditionalItemList != undefined) {
+		console.log(divideFoodAdditionalItemList);
+		for (let i = 0; i < divideFoodAdditionalItemList.length; i++) {
+			let additionalItemList = divideFoodAdditionalItemList[i];
+		}
+		const findBranchOrderFoodAdditionals = branchOrderFoodAdditionals.find(
+			(data) => data
+		);
+
+		for (
+			let i = 0;
+			i < findBranchOrderFoodAdditionals.foodBranchOrderFoodAdditionals.length;
+			i++
+		) {
+			const item =
+				findBranchOrderFoodAdditionals.foodBranchOrderFoodAdditionals[i];
+		}
+	}
 	return (
 		<div className="site-card-border-less-wrapper">
 			{branchOrderFoodAdditionals.map((data, index) => (

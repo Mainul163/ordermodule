@@ -7,9 +7,11 @@ import OrderListDetails from '../../component/orderListDetails/OrderListDetails'
 import { get_food_service } from '../../store/foodServicesActionType';
 
 const OrderCard = ({ visible }) => {
-	const [addItemQuantity, setAddItemQuantity] = useState([[]]);
-	const [addtionalItemList, setAddtionalItemList] = useState([]);
+	const [addItemQuantity, setAddItemQuantity] = useState([]);
+	const [additionalItemList, setadditionalItemList] = useState([]);
 	const [visibleItem, setVisibleItem] = useState(false);
+	const [divideFoodAdditionalItemList, setDivideFoodAdditionalItemList] =
+		useState();
 	const [additional, setAdditional] = useState();
 	const [branchOrderFoodAdditionals, setBranchOrderFoodAdditionals] = useState(
 		[]
@@ -19,7 +21,6 @@ const OrderCard = ({ visible }) => {
 		foodId: null,
 		quantity: null,
 		regularPrice: null,
-		k: null,
 		tableToServe: 1,
 		title: null,
 		foodBranchOrderFoodAdditionals: null,
@@ -27,6 +28,7 @@ const OrderCard = ({ visible }) => {
 	const [makeAdditional, setMakeAdditional] = useState({
 		foodAdditionalId: null,
 		title: null,
+		foodBranchOrderFoodAdditionalItems: null,
 	});
 	const [makeAdditionalItemList, setMakeAdditionalItemList] = useState({
 		foodAdditionalItemId: null,
@@ -50,6 +52,23 @@ const OrderCard = ({ visible }) => {
 		const items = [...addItemQuantity];
 		items.push([null]);
 		setAddItemQuantity(items);
+
+		let addAdditional = [...additionalList];
+		for (let i = 0; i < additional?.length; i++) {
+			const findAdditionalFood = additional[i];
+			const b=[]
+			// for (let j = 0; j < additionalItemList.length; j++) {
+			// 	const a=additionalItemList[i]
+			// }
+
+			const foodAdditionals = { ...makeAdditional };
+			foodAdditionals.foodAdditionalId = findAdditionalFood.id;
+			foodAdditionals.title = findAdditionalFood.title;
+			// console.log(	setAdditionalList(addAdditional););
+			addAdditional.push(foodAdditionals);
+			// addAdditional.push(additionals);
+		}
+		setAdditionalList(addAdditional);
 	};
 
 	const remove = (e) => {
@@ -67,43 +86,31 @@ const OrderCard = ({ visible }) => {
 		);
 
 		setAdditional(additionals?.vendorFoodAdditionals);
+		setAdditionalList([]);
+		setAddItemQuantity([]);
 		setVisibleItem(true);
-		let addAdditional = [];
-		for (let i = 0; i < additionals?.vendorFoodAdditionals?.length; i++) {
-			const findAdditionalFood = additionals?.vendorFoodAdditionals[i];
-
-			const foodAdditionals = { ...makeAdditional };
-			foodAdditionals.foodAdditionalId = findAdditionalFood.id;
-			foodAdditionals.title = findAdditionalFood.title;
-			// console.log(	setAdditionalList(addAdditional););
-			addAdditional.push(foodAdditionals);
-			// addAdditional.push(additionals);
-		}
-		setAdditionalList(addAdditional);
 	};
 
 	const onSelect = (e) => {
-		let addItemList = [...addtionalItemList];
+		let addItemList = [...additionalItemList];
 		for (let i = 0; i < additional.length; i++) {
 			// console.log(additional[i].vendorFoodAdditionalItems);
 			let itemList = additional[i].vendorFoodAdditionalItems.find(
 				(data) => data.id == e
 			);
 
-			// let makeItem = { ...makeAdditionalItemList };
-			// makeItem.foodAdditionalItemId = itemListz.id;
-			// makeItem.price = itemListz.price;
-			// makeItem.title = itemListz.title;
-			// console.log(makeItem);
 			if (itemList != undefined) {
 				let makeItem = { ...makeAdditionalItemList };
 				makeItem.foodAdditionalItemId = itemList?.id;
 				makeItem.price = itemList?.price;
 				makeItem.title = itemList?.title;
-				console.log(makeItem);
+				// console.log(makeItem);
+				addItemList.push(makeItem);
 			}
 		}
+		setadditionalItemList(addItemList);
 	};
+
 	const onCreate = (values) => {
 		console.log('Received values of form: ', values);
 		//* ************  find the food list ****************
@@ -119,12 +126,19 @@ const OrderCard = ({ visible }) => {
 		let orderFoodList = [...branchOrderFoodAdditionals];
 		orderFoodList.push(orderFoods);
 		setBranchOrderFoodAdditionals(orderFoodList);
-
 		setAddItemQuantity([[]]);
 		setAdditional(null);
 		setVisibleItem(false);
-	};
 
+		let divideAdditionalItemList = new Array(
+			Math.ceil(additionalItemList.length / addItemQuantity.length)
+		)
+			.fill()
+			.map((_) => additionalItemList.splice(0, addItemQuantity.length));
+		setDivideFoodAdditionalItemList(divideAdditionalItemList);
+	};
+	console.log(additionalItemList);
+	console.log(additionalList);
 	return (
 		<>
 			<Row justify="space-around" style={{ marginTop: '20px' }}>
@@ -145,6 +159,7 @@ const OrderCard = ({ visible }) => {
 					<OrderListDetails
 						branchOrderFoodAdditionals={branchOrderFoodAdditionals}
 						additionalList={additionalList}
+						divideFoodAdditionalItemList={divideFoodAdditionalItemList}
 					/>
 				</Col>
 			</Row>
