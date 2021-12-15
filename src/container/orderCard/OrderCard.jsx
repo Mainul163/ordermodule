@@ -28,7 +28,7 @@ const OrderCard = ({ visible }) => {
 	const [makeAdditional, setMakeAdditional] = useState({
 		foodAdditionalId: null,
 		title: null,
-		foodBranchOrderFoodAdditionalItems: null,
+		foodBranchOrderFoodAdditionalItems: [],
 	});
 	const [makeAdditionalItemList, setMakeAdditionalItemList] = useState({
 		foodAdditionalItemId: null,
@@ -56,7 +56,7 @@ const OrderCard = ({ visible }) => {
 		let addAdditional = [...additionalList];
 		for (let i = 0; i < additional?.length; i++) {
 			const findAdditionalFood = additional[i];
-			const b=[]
+			const b = [];
 			// for (let j = 0; j < additionalItemList.length; j++) {
 			// 	const a=additionalItemList[i]
 			// }
@@ -82,7 +82,7 @@ const OrderCard = ({ visible }) => {
 
 	const onChange = (e) => {
 		const additionals = foodServiceListData.foodService.foodService.find(
-			(data) => data.id == e
+			(data) => data.id === e
 		);
 
 		setAdditional(additionals?.vendorFoodAdditionals);
@@ -92,22 +92,25 @@ const OrderCard = ({ visible }) => {
 	};
 
 	const onSelect = (e) => {
+		console.log(e);
 		let addItemList = [...additionalItemList];
-		for (let i = 0; i < additional.length; i++) {
-			// console.log(additional[i].vendorFoodAdditionalItems);
-			let itemList = additional[i].vendorFoodAdditionalItems.find(
-				(data) => data.id == e
-			);
-
-			if (itemList != undefined) {
-				let makeItem = { ...makeAdditionalItemList };
-				makeItem.foodAdditionalItemId = itemList?.id;
-				makeItem.price = itemList?.price;
-				makeItem.title = itemList?.title;
-				// console.log(makeItem);
-				addItemList.push(makeItem);
-			}
+		let b = [];
+		let item = { ...makeAdditionalItemList };
+		const additionalList = additional.find((data) => data.id == e);
+		for (let i = 0; i < additionalList.vendorFoodAdditionalItems.length; i++) {
+			const itemList = additionalList.vendorFoodAdditionalItems[i];
+			item.foodAdditionalItemId = itemList.id;
+			item.title = itemList.title;
+			item.price = itemList.price;
+			b.push(item);
 		}
+		// console.log(item);
+		let additionalListLitem = { ...makeAdditional };
+		additionalListLitem.foodAdditionalId = additionalList.id;
+		additionalListLitem.title = additionalList.title;
+		additionalListLitem.foodBranchOrderFoodAdditionalItems = b;
+		// additionalList.vendorFoodAdditionalItems;
+		addItemList.push(additionalListLitem);
 		setadditionalItemList(addItemList);
 	};
 
@@ -115,7 +118,7 @@ const OrderCard = ({ visible }) => {
 		console.log('Received values of form: ', values);
 		//* ************  find the food list ****************
 		const foodList = foodServiceListData.foodService.foodService.find(
-			(data) => data.id == values.foodItemId
+			(data) => data.id === values.foodItemId
 		);
 		const orderFoods = { ...makeOrderFoods };
 		orderFoods.foodId = foodList.id;
@@ -130,15 +133,9 @@ const OrderCard = ({ visible }) => {
 		setAdditional(null);
 		setVisibleItem(false);
 
-		let divideAdditionalItemList = new Array(
-			Math.ceil(additionalItemList.length / addItemQuantity.length)
-		)
-			.fill()
-			.map((_) => additionalItemList.splice(0, addItemQuantity.length));
-		setDivideFoodAdditionalItemList(divideAdditionalItemList);
+		console.log('itemList', additionalItemList);
 	};
-	console.log(additionalItemList);
-	console.log(additionalList);
+
 	return (
 		<>
 			<Row justify="space-around" style={{ marginTop: '20px' }}>

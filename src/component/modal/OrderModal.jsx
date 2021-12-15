@@ -61,7 +61,7 @@ const OrderModal = ({
 								>
 									<Select key={i} onSelect={onSelect}>
 										{data?.vendorFoodAdditionalItems?.map((item) => (
-											<Option key={i} value={item.id}>
+											<Option key={i} value={data.id}>
 												{item.title}
 											</Option>
 										))}
