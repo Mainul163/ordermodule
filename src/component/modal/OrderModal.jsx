@@ -59,9 +59,9 @@ const OrderModal = ({
 									name={i + 1 + '.' + data.title}
 									rules={[{ required: true, message: 'Missing sight' }]}
 								>
-									<Select key={i} onSelect={onSelect}>
-										{data?.vendorFoodAdditionalItems?.map((item) => (
-											<Option key={i} value={data.id}>
+									<Select key={i + 1} onSelect={onSelect}>
+										{data?.vendorFoodAdditionalItems?.map((item, index) => (
+											<Option key={index + 1} value={item.id}>
 												{item.title}
 											</Option>
 										))}
@@ -124,7 +124,7 @@ const OrderModal = ({
 									allowClear
 									onChange={onChange}
 								>
-									{foodServiceListData.foodService.foodService.map(
+									{foodServiceListData?.foodService?.foodService?.map(
 										(foods, index) => (
 											<Option value={foods.id} key={index}>
 												{foods.title}

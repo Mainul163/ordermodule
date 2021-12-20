@@ -41,6 +41,11 @@ const OrderListDetails = ({
 					<br />
 					<p>Regular Price: {data.regularPrice}</p>
 					<p>Additional Item: {data.foodBranchOrderFoodAdditionals.length}</p>
+					{
+						data.foodBranchOrderFoodAdditionals.map(e=>e.foodBranchOrderFoodAdditionalItems.map(a=><p>
+							{a.title}
+						</p>))
+					}
 				</Card>
 			))}
 		</div>
